@@ -1,4 +1,4 @@
-skills:
+﻿skills:
   - id: current_time
     specificity: high
     sentences:
@@ -100,3 +100,5 @@ skills:
         captures:
           - id: where
             type: string
+  - id: messages
+   

@@ -101,4 +101,9 @@
           - id: where
             type: string
   - id: messages
-   
+    specificity: low
+    sentences:
+      - id: dial
+        captures:
+          - id: who
+            type: string

@@ -14,8 +14,11 @@ data class NotifyOutput(val notifications: List<Notification>): SkillOutput {
         var response = ""
         if (notifications.isNotEmpty()) {
             notifications.forEach { notification ->
-                val speechPart = ctx.getString(R.string.skill_notify_message, notification.appName, notification.message ?: "")
-                response += speechPart
+                response += if (notification.appName != null) {
+                    ctx.getString(R.string.skill_notify_message, notification.appName, notification.message ?: "")
+                } else {
+                    ctx.getString(R.string.skill_notify_unknown_app, notification.message ?: "")
+                }
             }
         }
         else {
@@ -29,12 +32,14 @@ data class NotifyOutput(val notifications: List<Notification>): SkillOutput {
         if (notifications.isNotEmpty()) {
             Column {
                 for (notification in notifications) {
+                    if (notification.appName != null) {
+                        Text(
+                            text = notification.appName, // String? -> "null" if message is null
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
                     Text(
-                        text = notification.appName,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                    Text(
-                        text = notification.message.toString(), // String? -> "null" if message is null
+                        text = notification.message.toString(),
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }

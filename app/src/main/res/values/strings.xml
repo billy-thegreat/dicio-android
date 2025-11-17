@@ -233,4 +233,5 @@
     <string name="no_notifications">No notifications</string>
     <string name="perm_notification_listener">read all notifications</string>
     <string name="appName_error">Name not found</string>
+    <string name="skill_notify_unknown_app">Your notification says %1$s</string>
 </resources>

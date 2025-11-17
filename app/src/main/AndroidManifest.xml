@@ -104,8 +104,8 @@
 
         <service
             android:name=".skills.notify.NotifyHandler"
-            android:description="@string/notify_handler_label"
-            android:label="@string/notify_handler_label"
+            android:description="@string/skill_notify_handler_label"
+            android:label="@string/skill_notify_handler_label"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:exported="false">
             <intent-filter>

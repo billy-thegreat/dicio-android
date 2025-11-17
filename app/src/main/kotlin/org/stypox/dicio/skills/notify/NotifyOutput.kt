@@ -13,12 +13,9 @@ data class NotifyOutput(val notifications: List<Notification>): SkillOutput {
     override fun getSpeechOutput(ctx: SkillContext): String {
         var response = ""
         if (notifications.isNotEmpty()) {
-            notifications.forEachIndexed { index, notification ->
+            notifications.forEach { notification ->
                 val speechPart = ctx.getString(R.string.skill_notify_message, notification.appName, notification.message ?: "")
                 response += speechPart
-                if (notifications.size > 1 && index < notifications.size - 1) {
-                    response += ". "
-                }
             }
         }
         else {

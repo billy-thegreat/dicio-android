@@ -30,12 +30,12 @@ open class NotifyHandler: NotificationListenerService() {
     }
 
     fun getActiveNotificationsList(): List<Notification> {
-        val activeStatusBarNotifications: Array<StatusBarNotification> = getActiveNotifications()
+        val activeStatusBarNotifications: Array<StatusBarNotification> = getActiveNotifications() // can only be run in NotificationListenerService() class
 
         val notifications = mutableListOf<Notification>()
         for (statusBarNotification in activeStatusBarNotifications) {
             if (statusBarNotification.notification.extras.getString("android.text") == null) {
-                continue
+                continue // skip empty notifications (like from android_system)
             }
             var appName: String?
             try {

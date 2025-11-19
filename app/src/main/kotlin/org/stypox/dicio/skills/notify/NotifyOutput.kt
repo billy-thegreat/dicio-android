@@ -14,7 +14,7 @@ data class NotifyOutput(val notifications: List<Notification>): SkillOutput {
         var response = ""
         if (notifications.isNotEmpty()) {
             notifications.forEach { notification ->
-                response += if (notification.appName != null) {
+                response += if (notification.appName != null) { // String? -> "null" if message is null
                     ctx.getString(R.string.skill_notify_message, notification.appName, notification.message ?: "")
                 } else {
                     ctx.getString(R.string.skill_notify_unknown_app, notification.message ?: "")

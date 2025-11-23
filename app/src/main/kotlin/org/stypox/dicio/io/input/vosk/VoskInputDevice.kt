@@ -21,7 +21,6 @@ package org.stypox.dicio.io.input.vosk
 
 import android.content.Context
 import android.util.Log
-import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import org.stypox.dicio.BuildConfig
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
@@ -55,7 +55,6 @@ import org.stypox.dicio.util.LocaleUtils
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import org.stypox.dicio.util.downloadBinaryFilesWithPartial
 import org.stypox.dicio.util.extractZip
-import org.vosk.BuildConfig
 import org.vosk.LibVosk
 import org.vosk.LogLevel
 import org.vosk.Model
@@ -110,20 +109,12 @@ class VoskInputDevice(
 
     private fun init(locale: Locale): VoskState {
         // choose the model url based on the locale
-        val modelUrl = try {
-            val localeResolutionResult = LocaleUtils.resolveSupportedLocale(
-                LocaleListCompat.create(locale),
-                MODEL_URLS.keys
-            )
-            MODEL_URLS[localeResolutionResult.supportedLocaleString]
-        } catch (e: LocaleUtils.UnsupportedLocaleException) {
-            null
-        }
+        val modelUrl = LocaleUtils.resolveValueForSupportedLocale(locale, MODEL_URLS)
 
         // the model url may change if the user changes app language, or in case of model updates
         val modelUrlChanged = try {
             sameModelUrlCheck.readText() != modelUrl
-        } catch (e: IOException) {
+        } catch (_: IOException) {
             // modelUrlCheck file does not exist
             true
         }

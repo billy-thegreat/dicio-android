@@ -1,9 +1,8 @@
-package org.stypox.dicio.skills.telephone
+package org.stypox.dicio.util
 
 import android.content.ContentResolver
 import android.provider.ContactsContract
 import android.util.Log
-import org.stypox.dicio.util.StringUtils
 import java.util.regex.Pattern
 
 class Contact(val name: String, val distance: Int, private val id: String) {
@@ -33,6 +32,47 @@ class Contact(val name: String, val distance: Int, private val id: String) {
         }
         return numbers
     }
+
+    fun getMobileNumbers(contentResolver: ContentResolver): List<String> {
+        val numbers = ArrayList<String>()
+        try {
+            val selection = (ContactsContract.CommonDataKinds.Phone.NUMBER + " IS NOT NULL AND " +
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                    ContactsContract.CommonDataKinds.Phone.TYPE + " = ?")
+
+            val selectionArgs = arrayOf(
+                id,
+                ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE.toString()
+            )
+
+            contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
+                selection,
+                selectionArgs,
+                null
+            )?.use { phoneNumberCursor ->
+                val cleanedNumbers: MutableSet<String> = HashSet()
+                val numberColumnIndex = phoneNumberCursor
+                    .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+
+                while (phoneNumberCursor.moveToNext()) {
+                    val number = phoneNumberCursor.getString(numberColumnIndex)
+                    if (!number.isNullOrEmpty()) {
+                        val cleanedNumber = NUMBER_CLEANER.matcher(number).replaceAll("")
+                        if (!cleanedNumbers.contains(cleanedNumber)) {
+                            numbers.add(number)
+                            cleanedNumbers.add(cleanedNumber)
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Could not get mobile numbers for contact $name", e)
+        }
+        return numbers
+    }
+
 
     companion object {
         private val TAG = Contact::class.java.simpleName

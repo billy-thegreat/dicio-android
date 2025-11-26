@@ -1,9 +1,3 @@
 dial:
-  - text|sms|message|send (a)? text to .who. (saying|that says)? .what.
-  - text|sms|message|send (a)? text to .who.
-  - text|sms|message|send (a)? text .who. (saying|that says)? .what.
-  - text|sms|message|send (a)? text .who.
-  - text|sms|message .who. (saying|that says)? .what.
-  - text|sms|message .who.
-  - text|sms|message|send (a)? text (to)? .who. (saying|that says)? .what.
-  - text|sms|message|send (a)? text (to)? .who.
+  - text|(send a text to) .who.
+  - text|(send a text to) .who. (that says)|saying .what.

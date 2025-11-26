@@ -9,6 +9,7 @@ import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.standard.StandardRecognizerData
 import org.dicio.skill.standard.StandardRecognizerSkill
 import org.stypox.dicio.sentences.Sentences.Telephone
+import org.stypox.dicio.util.Contact
 
 class TelephoneSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Telephone>) :
     StandardRecognizerSkill<Telephone>(correspondingSkillInfo, data) {

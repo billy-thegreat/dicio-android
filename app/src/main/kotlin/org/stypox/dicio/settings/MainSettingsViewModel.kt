@@ -46,14 +46,14 @@ class MainSettingsViewModel @Inject constructor(
     fun addOwwUserWakeFile(uri: Uri) {
         viewModelScope.launch {
             OpenWakeWordDevice.addUserWakeFile(getApplication(), uri)
-            wakeDeviceWrapper?.reinitializeToReleaseResources()
+            wakeDeviceWrapper?.reinitialize()
         }
     }
 
     fun removeOwwUserWakeFile() {
         viewModelScope.launch {
             OpenWakeWordDevice.removeUserWakeFile(getApplication())
-            wakeDeviceWrapper?.reinitializeToReleaseResources()
+            wakeDeviceWrapper?.reinitialize()
         }
     }
 

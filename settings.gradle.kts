@@ -1,9 +1,6 @@
 import me.champeau.gradle.igp.gitRepositories
 import org.eclipse.jgit.api.Git
 import java.io.FileInputStream
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.util.Properties
 
 rootProject.name = "Dicio"
@@ -64,7 +61,7 @@ fun findInVersionCatalog(versionIdentifier: String): String {
         .firstNotNullOf { regex.find(it)?.groupValues?.get(1) }
 }
 
-val includeGitRepos = listOf(
+val includeGitRepos: List<IncludeGitRepo> = listOf(
     IncludeGitRepo(
         name = "dicio-numbers",
         uri = "https://github.com/Stypox/dicio-numbers",
@@ -79,7 +76,7 @@ val includeGitRepos = listOf(
     ),
 )
 
-val localProperties = Properties().apply {
+val localProperties: Properties = Properties().apply {
     try {
         load(FileInputStream(File(rootDir, "local.properties")))
     } catch (e: Throwable) {

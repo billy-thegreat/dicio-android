@@ -1,13 +1,13 @@
 package org.stypox.dicio.skills.notify
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
-import android.service.notification.StatusBarNotification
+import android.util.Log
 
 open class NotifyHandler: NotificationListenerService() {
     companion object Companion {
+        private const val TAG: String = "NotifyHandler"
         var Instance: NotifyHandler? = null
     }
 
@@ -20,39 +20,39 @@ open class NotifyHandler: NotificationListenerService() {
         Instance = this
     }
 
-    override fun onListenerConnected() {
-        super.onListenerConnected()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         Instance = null
     }
 
     fun getActiveNotificationsList(): List<Notification> {
-        val activeStatusBarNotifications: Array<StatusBarNotification> = getActiveNotifications() // can only be run in NotificationListenerService() class
+        // getActiveNotifications() can only be run in NotificationListenerService() class
+        return getActiveNotifications().mapNotNull { notification ->
+            val title = notification.notification.extras.getString("android.title")
+            val message = notification.notification.extras.getString("android.text")
+            if (title.isNullOrBlank() && message.isNullOrBlank()) {
+                return@mapNotNull null // skip empty notifications (like from android_system)
+            }
+            Log.e(TAG, notification.notification.extras.toString())
 
-        val notifications = mutableListOf<Notification>()
-        for (statusBarNotification in activeStatusBarNotifications) {
-            if (statusBarNotification.notification.extras.getString("android.text") == null) {
-                continue // skip empty notifications (like from android_system)
-            }
-            var appName: String?
-            try {
-                val pm: PackageManager = packageManager
-                val ai = pm.getApplicationInfo(statusBarNotification.packageName, 0)
-                appName = pm.getApplicationLabel(ai).toString()
-            }
-            catch(e: Exception) {
-                e.printStackTrace()
-                appName = null
+            val appName = try {
+                val appInfo = packageManager.getApplicationInfo(notification.packageName, 0)
+                packageManager.getApplicationLabel(appInfo).toString()
+            } catch (e: Exception) {
+                Log.e(TAG, "Could not get app name", e)
+                ""
             }
 
-            val message = statusBarNotification.notification.extras.getString("android.text")
-            notifications.add(Notification(appName, message))
+            return@mapNotNull Notification(appName, title ?: "", message ?: "")
         }
-        return notifications
     }
 }
 
-data class Notification(val appName: String?, val message: String?)
+/**
+ * Either [message] or [title] will be non-empty
+ */
+data class Notification(
+    val appName: String,
+    val title: String,
+    val message: String,
+)

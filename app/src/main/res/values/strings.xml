@@ -246,12 +246,12 @@
     <string name="failed_to_copy">Failed to copy to clipboard</string>
     <string name="skill_translation_auto">Auto</string>
     <string name="skill_search_duckduckgo_recaptcha">DuckDuckGo did not provide results, asking for a Captcha to be solved</string>
-    <string name="skill_notify_message">Your notification from %1$s says %2$s</string>
+    <string name="skill_notify_message_no_app">The notification says %1$s.</string>
+    <string name="skill_notify_message_app">The %1$s notification says %2$s.</string>
+    <string name="skill_notify_messages_separator">, </string>
     <string name="skill_sentence_example_notify">What\'s my notification?</string>
     <string name="skill_name_notify">Notify</string>
-    <string name="no_notifications">No notifications</string>
+    <string name="skill_notify_no_notifications">You have no notifications</string>
     <string name="perm_notification_listener">read all notifications</string>
-    <string name="appName_error">Name not found</string>
-    <string name="skill_notify_unknown_app">Your notification says %1$s</string>
-    <string name="skill_notify_handler_label">Dicio Notify Skill</string>
+    <string name="skill_notify_handler_label">Notify skill in Dicio assistant</string>
 </resources>

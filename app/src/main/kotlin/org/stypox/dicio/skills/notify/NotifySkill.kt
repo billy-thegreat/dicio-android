@@ -7,18 +7,9 @@ import org.dicio.skill.standard.StandardRecognizerData
 import org.dicio.skill.standard.StandardRecognizerSkill
 import org.stypox.dicio.sentences.Sentences.Notify
 
-class NotifySkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Notify>)
-    : StandardRecognizerSkill<Notify>(correspondingSkillInfo, data) {
-        override suspend fun generateOutput(ctx: SkillContext, inputData: Notify): SkillOutput {
-            val handlerInstance = NotifyHandler.Instance
-            if (handlerInstance != null) {
-               val notifications = handlerInstance.getActiveNotificationsList()
-               return NotifyOutput(notifications)
-           }
-            else  {
-                return NotifyOutput(emptyList())
-            }
+class NotifySkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Notify>) :
+    StandardRecognizerSkill<Notify>(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Notify): SkillOutput {
+        return NotifyOutput(NotifyHandler.Instance?.getActiveNotificationsList())
     }
-
-
 }

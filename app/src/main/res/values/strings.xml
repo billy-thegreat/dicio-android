@@ -251,6 +251,7 @@
     <string name="skill_notify_messages_separator">, </string>
     <string name="skill_sentence_example_notify">What\'s my notification?</string>
     <string name="skill_name_notify">Notify</string>
+    <string name="skill_notify_failed">Couldn\'t connect the notification listener service</string>
     <string name="skill_notify_no_notifications">You have no notifications</string>
     <string name="perm_notification_listener">read all notifications</string>
     <string name="skill_notify_handler_label">Notify skill in Dicio assistant</string>

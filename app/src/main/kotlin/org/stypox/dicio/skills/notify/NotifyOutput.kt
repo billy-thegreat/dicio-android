@@ -2,12 +2,9 @@ package org.stypox.dicio.skills.notify
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -22,9 +19,15 @@ import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.util.StringUtils
 import org.stypox.dicio.util.getString
 
-data class NotifyOutput(val notifications: List<Notification>): SkillOutput {
+data class NotifyOutput(val notifications: List<Notification>?): SkillOutput {
     override fun getSpeechOutput(ctx: SkillContext): String {
-        val notificationsStrings = notifications.map { notification ->
+        if (notifications == null) {
+            return ctx.getString(R.string.skill_notify_failed)
+        } else if (notifications.isEmpty()) {
+            return ctx.getString(R.string.skill_notify_no_notifications)
+        }
+
+        return notifications.joinToString(" ") { notification ->
             val message = StringUtils.joinNonBlank(
                 notification.title,
                 notification.message,
@@ -36,16 +39,13 @@ data class NotifyOutput(val notifications: List<Notification>): SkillOutput {
                 ctx.getString(R.string.skill_notify_message_app, notification.appName, message)
             }
         }
-        return if (notificationsStrings.isEmpty()) {
-            ctx.getString(R.string.skill_notify_no_notifications)
-        } else {
-            notificationsStrings.joinToString(" ")
-        }
     }
 
     @Composable
     override fun GraphicalOutput(ctx: SkillContext) {
-        if (notifications.isEmpty()) {
+        if (notifications == null) {
+            Headline(stringResource(R.string.skill_notify_failed))
+        } else if (notifications.isEmpty()) {
             Headline(stringResource(R.string.skill_notify_no_notifications))
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {

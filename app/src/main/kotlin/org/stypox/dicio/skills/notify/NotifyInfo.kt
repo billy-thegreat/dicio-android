@@ -26,7 +26,6 @@ object NotifyInfo: SkillInfo("notify") {
 
     override fun isAvailable(ctx: SkillContext): Boolean {
         return Sentences.Notify[ctx.sentencesLanguage] != null
-
     }
 
     override val neededPermissions: List<Permission>

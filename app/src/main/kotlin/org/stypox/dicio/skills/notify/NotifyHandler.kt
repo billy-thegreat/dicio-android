@@ -1,7 +1,5 @@
 package org.stypox.dicio.skills.notify
 
-import android.content.Intent
-import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.util.Log
 
@@ -9,10 +7,6 @@ open class NotifyHandler: NotificationListenerService() {
     companion object Companion {
         private const val TAG: String = "NotifyHandler"
         var Instance: NotifyHandler? = null
-    }
-
-    override fun onBind(intent: Intent?): IBinder? {
-        return super.onBind(intent)
     }
 
     override fun onCreate() {
